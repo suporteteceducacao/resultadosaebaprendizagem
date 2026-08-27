@@ -305,10 +305,10 @@
         
         // Cores dos rótulos conforme exigência (branco para vermelho e verde-escuro)
         const textColors = {
-            'ABAIXO DO BÁSICO': '#FF4136',
-            'BÁSICO': '#FF851B',
-            'PROFICIENTE': '#B0E57C',
-            'AVANÇADO': '#006400'
+            'ABAIXO DO BÁSICO': 'white',
+            'BÁSICO': 'black',
+            'PROFICIENTE': 'black',
+            'AVANÇADO': 'white'
         };
 
         const categorias = [];
@@ -325,7 +325,7 @@
             categorias.push(cat);
             valoresCategorias.push(soma);
             coresList.push(cores[cat] || '#888888');
-            textColorsList.push(textColors[cat] || 'black');
+            textColorsList.push(textColors[cat] || 'white');
         }
 
         return { categorias, valoresCategorias, cores: coresList, textColors: textColorsList };
