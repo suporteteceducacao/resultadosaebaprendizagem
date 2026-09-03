@@ -8,6 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <!-- Chart.js DataLabels Plugin -->
@@ -18,127 +20,467 @@
     <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <style>
-        body {
-            background: #f4f6f9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            color: #333;
+        :root {
+            --cor-primaria: #1e3a8a;
+            --cor-primaria-light: #3b82f6;
+            --cor-secundaria: #f59e0b;
+            --cor-fundo: #f8fafc;
+            --cor-card: #ffffff;
+            --cor-texto: #1e293b;
+            --cor-texto-claro: #64748b;
+            --cor-borda: #e2e8f0;
+            --cor-sucesso: #10b981;
+            --cor-perigo: #ef4444;
+            
+            /* Cores originais dos níveis preservadas */
+            --nivel-abaixo: #FF4136;
+            --nivel-basico: #FF851B;
+            --nivel-proficiente: #B0E57C;
+            --nivel-avancado: #006400;
+            
+            --cor-maracanau: #8b5cf6;
         }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--cor-fundo);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--cor-texto);
+            min-height: 100vh;
+        }
+        
+        /* SIDEBAR */
         .sidebar {
-            background: #ffffff;
-            border-right: 1px solid #e0e0e0;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border-right: 1px solid var(--cor-borda);
             min-height: 100vh;
             position: sticky;
             top: 0;
-            padding: 30px 20px;
+            padding: 28px 22px;
             overflow-y: auto;
-            box-shadow: 3px 0 15px rgba(0,0,0,0.03);
+            box-shadow: 0 0 30px rgba(0,0,0,0.04);
             transition: all 0.3s ease;
         }
+        
         .sidebar.collapsed {
             margin-left: -280px;
             display: none;
         }
+        
         .sidebar .logo-container {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
+        
         .main-content {
-            padding: 40px 30px;
+            padding: 36px 40px;
             transition: all 0.3s ease;
         }
+        
+        /* CARDS */
         .card-edicao {
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #eaeaea;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            background: var(--cor-card);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--cor-borda);
+            transition: all 0.3s ease;
         }
+        
+        .card-edicao:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        
         .card-aprendizagem {
-            border-radius: 10px;
-            padding: 12px 15px;
+            border-radius: 14px;
+            padding: 18px 20px;
             text-align: center;
-            min-width: 170px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 180px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
         }
+        
+        .card-aprendizagem:hover {
+            transform: scale(1.03);
+        }
+        
         .card-aprendizagem h6 {
-            font-size: 0.85rem;
-            margin-bottom: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 6px;
             text-transform: uppercase;
             font-weight: 700;
+            letter-spacing: 0.8px;
+            opacity: 0.9;
         }
+        
         .card-aprendizagem .valor {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             font-weight: 800;
             margin: 0;
+            line-height: 1;
         }
+        
+        /* FOOTER */
         .footer {
-            border-top: 1px solid #e0e0e0;
-            padding: 25px 0;
-            margin-top: 50px;
+            border-top: 1px solid var(--cor-borda);
+            padding: 30px 0;
+            margin-top: 60px;
             text-align: center;
-            color: #777;
-            font-size: 0.9rem;
+            color: var(--cor-texto-claro);
+            font-size: 0.875rem;
         }
+        
+        /* TABS */
         .tab-content {
-            margin-top: 25px;
+            margin-top: 28px;
         }
-        .grafico-wrapper {
-            height: 170px;
-            width: 100%;
+        
+        .nav-tabs {
+            border-bottom: 2px solid var(--cor-borda);
+            gap: 8px;
         }
-        .select-label {
-            font-weight: 600;
-            margin-top: 12px;
-            font-size: 0.9rem;
-            color: #495057;
-        }
-        .sidebar .form-control, .sidebar .form-select {
-            margin-bottom: 12px;
-            border-radius: 8px;
-            border-color: #ced4da;
-        }
+        
         .nav-tabs .nav-link {
             font-weight: 600;
-            color: #495057;
-            border-radius: 8px 8px 0 0;
+            color: var(--cor-texto-claro);
+            border: none;
+            border-radius: 10px 10px 0 0;
+            padding: 12px 20px;
+            transition: all 0.3s ease;
+            position: relative;
         }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--cor-primaria);
+            background: rgba(59, 130, 246, 0.05);
+        }
+        
         .nav-tabs .nav-link.active {
-            color: #0d6efd;
-            background-color: #fff;
+            color: var(--cor-primaria);
+            background-color: var(--cor-card);
+            border-bottom: 3px solid var(--cor-primaria-light);
+            font-weight: 700;
         }
+        
+        .grafico-wrapper {
+            height: 180px;
+            width: 100%;
+        }
+        
+        .grafico-wrapper-vertical {
+            height: 450px;
+            width: 100%;
+            padding: 10px;
+        }
+        
+        .select-label {
+            font-weight: 600;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            color: var(--cor-texto);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .sidebar .form-control, .sidebar .form-select {
+            margin-bottom: 4px;
+            border-radius: 10px;
+            border: 1.5px solid var(--cor-borda);
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .sidebar .form-control:focus, .sidebar .form-select:focus {
+            border-color: var(--cor-primaria-light);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        
+        /* HEADER PDF */
         .pdf-header-print {
             display: none;
-            background: #1e3a8a;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
             color: white;
-            padding: 20px;
+            padding: 24px 28px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        /* BOTÕES */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-light) 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(30, 58, 138, 0.3);
+        }
+        
+        .btn-outline-secondary {
+            border: 1.5px solid var(--cor-borda);
+            color: var(--cor-texto);
+            border-radius: 10px;
+            padding: 6px 14px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background: var(--cor-primaria);
+            color: white;
+            border-color: var(--cor-primaria);
+        }
+        
+        .btn-outline-success {
+            border: 1.5px solid var(--cor-sucesso);
+            color: var(--cor-sucesso);
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-outline-success:hover {
+            background: var(--cor-sucesso);
+            border-color: var(--cor-sucesso);
+            color: white;
+        }
+        
+        .btn-outline-primary {
+            border: 1.5px solid var(--cor-primaria);
+            color: var(--cor-primaria);
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--cor-primaria);
+            border-color: var(--cor-primaria);
+            color: white;
+        }
+        
+        /* HEADER */
+        .page-header {
+            margin-bottom: 30px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid var(--cor-borda);
+        }
+        
+        .page-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--cor-texto);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .page-title .icon-wrapper {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-primaria-light) 100%);
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+        }
+        
+        .page-subtitle {
+            color: var(--cor-texto-claro);
+            font-size: 1rem;
+            margin: 0;
+        }
+        
+        .page-subtitle strong {
+            color: var(--cor-primaria);
+            font-weight: 700;
+        }
+        
+        /* LEGENDA SIDEBAR */
+        .legend-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--cor-borda);
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+        
+        /* INFO BOX */
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-left: 4px solid var(--cor-primaria);
+            padding: 14px 18px;
             border-radius: 8px;
             margin-bottom: 20px;
+            font-size: 0.875rem;
+            color: var(--cor-primaria);
+        }
+        
+        .info-box.comparativo {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border-left-color: var(--cor-maracanau);
+            color: var(--cor-maracanau);
+        }
+        
+        /* TIPOS DE APRENDIZADO */
+        .learning-types-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid var(--cor-borda);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 40px;
+        }
+        
+        .learning-types-card h5 {
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--cor-texto);
+        }
+        
+        .learning-types-card ul li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+        
+        .learning-types-card ul li:last-child {
+            border-bottom: none;
+        }
+        
+        .learning-types-card strong {
+            color: var(--cor-primaria);
+            font-weight: 700;
+        }
+        
+        /* STATUS MSG */
+        .status-msg {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: #eff6ff;
+            color: var(--cor-primaria);
+            margin-bottom: 14px;
+        }
+        
+        .status-msg.success {
+            background: #d1fae5;
+            color: var(--cor-sucesso);
+        }
+        
+        .status-msg.error {
+            background: #fee2e2;
+            color: var(--cor-perigo);
+        }
+        
+        /* LOADING */
+        .loading-box {
+            background: white;
+            border: 1px solid var(--cor-borda);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        /* COMPARATIVO BADGE */
+        .comparativo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--cor-maracanau);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .comparativo-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--cor-maracanau);
+            border-radius: 50%;
+        }
+        
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 16px;
+            }
+            .page-title {
+                font-size: 1.6rem;
+            }
+            .grafico-wrapper-vertical {
+                height: 350px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="container-fluid">
-    <div class="row">
+    <div class="row g-0">
         <!-- SIDEBAR -->
         <div class="col-md-4 col-lg-3 sidebar" id="sidebar">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="fw-bold text-primary small">PAINEL DE CONTROLE</span>
+                <span class="fw-bold text-primary small" style="letter-spacing: 1px;">PAINEL DE CONTROLE</span>
                 <button class="btn btn-sm btn-light border" id="btnToggleSidebarInside" title="Recolher Menu">
                     <i class="bi bi-list"></i>
                 </button>
             </div>
             <div class="logo-container">
-                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="65" viewBox="0 0 220 75">
-                    <rect width="220" height="75" rx="10" fill="#1e3a8a"/>
-                    <text x="20" y="35" font-family="Segoe UI, sans-serif" font-size="20" fill="#ffffff" font-weight="bold">ANÁLISE SAEB</text>
-                    <text x="20" y="55" font-family="Segoe UI, sans-serif" font-size="12" fill="#93c5fd">DESEMPENHO POR NÍVEIS</text>
+                <svg xmlns="http://www.w3.org/2000/svg" width="200" height="70" viewBox="0 0 220 75">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="220" height="75" rx="12" fill="url(#logoGrad)"/>
+                    <text x="20" y="35" font-family="Inter, sans-serif" font-size="20" fill="#ffffff" font-weight="800">ANÁLISE SAEB</text>
+                    <text x="20" y="55" font-family="Inter, sans-serif" font-size="11" fill="#93c5fd" font-weight="500">DESEMPENHO POR NÍVEIS</text>
                 </svg>
             </div>
 
             <hr class="text-muted" />
-            <div id="statusMsg" class="mb-3 small fw-semibold text-primary">🔄 Carregando dados automaticamente...</div>
+            <div id="statusMsg" class="status-msg">🔄 Carregando dados automaticamente...</div>
 
             <div id="controls">
                 <label class="select-label">Escola / Município</label>
@@ -150,79 +492,144 @@
                 <label class="select-label">Componente Curricular</label>
                 <select id="componenteSelect" class="form-select shadow-sm"></select>
 
-                <button id="btnPDF" class="btn btn-outline-primary w-100 mt-3 shadow-sm">
+                <button id="btnPDF" class="btn btn-outline-primary w-100 mt-3">
                     <i class="bi bi-file-earmark-pdf"></i> Gerar PDF com Cabeçalho
                 </button>
             </div>
             
-            <hr class="text-muted" />
-            <div class="small text-muted p-3 bg-light rounded border">
-                <strong class="text-dark">Legenda dos Níveis:</strong><br />
-                <span style="color:#FF0000; font-weight:bold;">●</span> Abaixo do básico<br />
-                <span style="color:#FFD700; font-weight:bold;">●</span> Básico<br />
-                <span style="color:#B0E57C; font-weight:bold;">●</span> Proficiente<br />
-                <span style="color:#006400; font-weight:bold;">●</span> Avançado
+            <hr class="text-muted my-3" />
+            <div class="legend-box">
+                <strong class="text-dark d-block mb-2" style="font-size: 0.85rem;">LEGENDA DOS NÍVEIS:</strong>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--nivel-abaixo);"></div>
+                    <span>Abaixo do Básico</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--nivel-basico);"></div>
+                    <span>Básico</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--nivel-proficiente);"></div>
+                    <span>Proficiente</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background: var(--nivel-avancado);"></div>
+                    <span>Avançado</span>
+                </div>
             </div>
         </div>
 
         <!-- CONTEÚDO PRINCIPAL -->
         <div class="col-md-12 col-lg-9 main-content" id="mainContent">
-            <!-- Botão Hambúrguer para Abrir/Fechar Menu -->
+            <!-- Botão Hambúrguer -->
             <div class="mb-3">
                 <button class="btn btn-primary shadow-sm" id="btnToggleSidebar" title="Alternar Menu Lateral">
                     <i class="bi bi-list fs-5"></i> Menu / Filtros
                 </button>
             </div>
 
-            <!-- Cabeçalho visível apenas na exportação/impressão do PDF se desejado -->
+            <!-- Cabeçalho para PDF -->
             <div id="pdfHeaderBox" class="pdf-header-print">
                 <h3 id="pdfEscolaNome" class="fw-bold mb-1"></h3>
                 <p id="pdfDetalhesInfo" class="mb-0 text-light"></p>
             </div>
 
-            <h1 class="display-6 fw-bold text-dark">📊 Análise de Desempenho SAEB por Níveis</h1>
-            <p class="text-muted" id="subtituloTopo">Visualização automática dos resultados por edição e evolução da aprendizagem.</p>
+            <!-- HEADER -->
+            <div class="page-header">
+                <h1 class="page-title">
+                    <span class="icon-wrapper">
+                        <i class="bi bi-bar-chart-line-fill"></i>
+                    </span>
+                    Análise de Desempenho SAEB por Níveis
+                </h1>
+                <p class="page-subtitle" id="subtituloTopo">Visualização automática dos resultados por edição e evolução da aprendizagem.</p>
+            </div>
 
-            <div id="placeholder" class="alert alert-info py-4">
-                <div class="spinner-border spinner-border-sm me-2" role="status"></div> Lendo base de dados local (`Pasta_2.xlsx`), por favor aguarde...
+            <div id="placeholder" class="loading-box">
+                <div class="spinner-border text-primary mb-2" role="status"></div>
+                <div>Lendo base de dados local (`Pasta_2.xlsx`), por favor aguarde...</div>
             </div>
 
             <!-- Abas -->
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="display:none;">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="desempenho-tab" data-bs-toggle="tab" data-bs-target="#desempenho" type="button" role="tab">Desempenho por Edição</button>
+                    <button class="nav-link active" id="desempenho-tab" data-bs-toggle="tab" data-bs-target="#desempenho" type="button" role="tab">
+                        <i class="bi bi-bar-chart-fill me-1"></i> Desempenho por Edição
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="evolucao-tab" data-bs-toggle="tab" data-bs-target="#evolucao" type="button" role="tab">Evolução da Aprendizagem Adequada</button>
+                    <button class="nav-link" id="distribuicao-tab" data-bs-toggle="tab" data-bs-target="#distribuicao" type="button" role="tab">
+                        <i class="bi bi-bar-chart-steps me-1"></i> Distribuição por Níveis (Todas Edições)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="evolucao-tab" data-bs-toggle="tab" data-bs-target="#evolucao" type="button" role="tab">
+                        <i class="bi bi-graph-up me-1"></i> Evolução Histórica
+                    </button>
                 </li>
             </ul>
 
             <div class="tab-content" id="myTabContent" style="display:none;">
-                <!-- Aba Desempenho -->
+                <!-- Aba Desempenho por Edição -->
                 <div class="tab-pane fade show active" id="desempenho" role="tabpanel"></div>
 
-                <!-- Aba Evolução -->
+                <!-- NOVA ABA: Distribuição por Níveis (Todas Edições) -->
+                <div class="tab-pane fade" id="distribuicao" role="tabpanel">
+                    <div class="card-edicao">
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold">
+                                    <i class="bi bi-bar-chart-steps text-primary me-2"></i>
+                                    Distribuição por Níveis em Todas as Edições
+                                </h5>
+                                <small class="text-muted">Gráfico de barras verticais empilhadas comparando os grupos de níveis ao longo dos anos</small>
+                            </div>
+                            <button id="btnBaixarDistribuicao" class="btn btn-outline-success fw-semibold">
+                                <i class="bi bi-download"></i> Baixar Gráfico PNG
+                            </button>
+                        </div>
+                        <div class="grafico-wrapper-vertical">
+                            <canvas id="graficoDistribuicao"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aba Evolução Histórica (AGORA COM COMPARATIVO MARACANAÚ) -->
                 <div class="tab-pane fade" id="evolucao" role="tabpanel">
                     <div class="card-edicao">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="mb-0 fw-bold">Evolução Histórica da Aprendizagem Adequada (%)</h5>
-                            <button id="btnBaixarEvolucao" class="btn btn-outline-success btn-sm fw-semibold">📥 Baixar Gráfico de Evolução</button>
+                        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                            <div>
+                                <h5 class="mb-1 fw-bold">
+                                    <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+                                    Evolução Histórica da Aprendizagem Adequada (%)
+                                </h5>
+                                <small class="text-muted">Evolução da escola selecionada em comparação com o Município de Maracanaú</small>
+                            </div>
+                            <button id="btnBaixarEvolucao" class="btn btn-outline-success fw-semibold">
+                                <i class="bi bi-download"></i> Baixar Gráfico PNG
+                            </button>
                         </div>
-                        <div style="height:400px;"><canvas id="graficoEvolucao"></canvas></div>
+                        <div class="info-box comparativo">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            <strong>Comparativo Municipal:</strong> A linha tracejada roxa representa o percentual de aprendizagem adequada do <strong>Município de Maracanaú</strong> para a mesma etapa e componente, servindo como referência para análise.
+                        </div>
+                        <div style="height:450px;">
+                            <canvas id="graficoEvolucao"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Tipos de Aprendizado -->
-            <div class="card-edicao mt-5 bg-light border-0">
-                <h5 class="fw-bold mb-3">Tipos de Aprendizado</h5>
+            <div class="learning-types-card">
+                <h5><i class="bi bi-lightbulb-fill text-warning me-2"></i>Tipos de Aprendizado</h5>
                 <ul class="list-unstyled mb-2">
-                    <li class="mb-2"><strong>Avançado:</strong> Aprendizado além da expectativa. Recomenda-se para os alunos neste nível atividades desafiadoras.</li>
-                    <li class="mb-2"><strong>Proficiente:</strong> Os alunos neste nível encontram-se preparados para continuar os estudos. Recomenda-se atividades de aprofundamento.</li>
-                    <li class="mb-2"><strong>Básico:</strong> Os alunos neste nível precisam melhorar. Sugere-se atividades de reforço.</li>
-                    <li><strong>Abaixo do básico:</strong> Os alunos neste nível apresentaram pouquíssimo aprendizado. É necessário a recuperação de conteúdos.</li>
+                    <li><strong>Avançado:</strong> Aprendizado além da expectativa. Recomenda-se atividades desafiadoras.</li>
+                    <li><strong>Proficiente:</strong> Os alunos estão preparados para continuar os estudos. Recomenda-se atividades de aprofundamento.</li>
+                    <li><strong>Básico:</strong> Os alunos precisam melhorar. Sugere-se atividades de reforço.</li>
+                    <li><strong>Abaixo do Básico:</strong> Apresentaram pouquíssimo aprendizado. É necessária a recuperação de conteúdos.</li>
                 </ul>
-                <p class="text-muted small mb-0">Fonte: <a href="https://qedu.org.br/" target="_blank">https://qedu.org.br/</a> INEP, 2023.</p>
+                <p class="text-muted small mb-0">Fonte: <a href="https://qedu.org.br/" target="_blank" class="text-decoration-none">https://qedu.org.br/</a> – INEP, 2023.</p>
             </div>
 
             <footer class="footer">
@@ -241,12 +648,13 @@
     let dadosFiltrados = [];
     let graficosBarras = [];
     let graficoEvolucao = null;
+    let graficoDistribuicao = null;
 
     const CAMINHO_ARQUIVO = "Pasta_2.xlsx";
 
     Chart.register(ChartDataLabels);
 
-    // Controle de Menu Hambúrguer
+    // Controle de Menu
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
@@ -276,6 +684,7 @@
         return nomeCompleto;
     }
 
+    // LÓGICA ORIGINAL DE AGRUPAMENTO (PRESERVADA)
     function agruparNiveis(etapa, componente, valores) {
         let grupos = {};
         const comp = mapComponente(componente);
@@ -295,15 +704,14 @@
             grupos = {'ABAIXO DO BÁSICO': [0,1,2], 'BÁSICO':[3,4], 'PROFICIENTE':[5,6], 'AVANÇADO':[7,8,9,10]};
         }
 
-        // Nova paleta de cores solicitada (mais escuras e refinadas)
+        // Cores originais preservadas
         const cores = {
-            'ABAIXO DO BÁSICO': '#FF4136', // Vermelho escuro
-            'BÁSICO': '#FF851B',           // Amarelo mostarda
-            'PROFICIENTE': '#B0E57C',      // Verde claro
-            'AVANÇADO': '#006400'          // Verde escuro
+            'ABAIXO DO BÁSICO': '#FF4136',
+            'BÁSICO': '#FF851B',
+            'PROFICIENTE': '#B0E57C',
+            'AVANÇADO': '#006400'
         };
         
-        // Cores dos rótulos conforme exigência (branco para vermelho e verde-escuro)
         const textColors = {
             'ABAIXO DO BÁSICO': 'white',
             'BÁSICO': 'black',
@@ -374,7 +782,8 @@
                     })
                     .catch(err2 => {
                         document.getElementById('statusMsg').innerHTML = `<span class="text-danger">❌ Erro: ${err.message}</span>`;
-                        document.getElementById('placeholder').innerHTML = `<div class="alert alert-danger">Erro ao carregar '${CAMINHO_ARQUIVO}' automaticamente. Coloque-o na mesma pasta do arquivo HTML.</div>`;
+                        document.getElementById('statusMsg').className = 'status-msg error';
+                        document.getElementById('placeholder').innerHTML = `<div class="alert alert-danger">Erro ao carregar '${CAMINHO_ARQUIVO}'. Coloque-o na mesma pasta do arquivo HTML.</div>`;
                     });
             });
     }
@@ -432,11 +841,13 @@
         });
 
         if (dados.length === 0) {
-            document.getElementById('statusMsg').innerHTML = '<span class="text-danger">Nenhum dado válido encontrado.</span>';
+            document.getElementById('statusMsg').innerHTML = '<span>Nenhum dado válido encontrado.</span>';
+            document.getElementById('statusMsg').className = 'status-msg error';
             return;
         }
 
-        document.getElementById('statusMsg').innerHTML = `<span class="text-success">✅ ${dados.length} registros carregados!</span>`;
+        document.getElementById('statusMsg').innerHTML = `<i class="bi bi-check-circle-fill me-1"></i> ${dados.length} registros carregados!`;
+        document.getElementById('statusMsg').className = 'status-msg success';
         document.getElementById('placeholder').style.display = 'none';
         document.querySelector('.nav-tabs').style.display = 'flex';
         document.getElementById('myTabContent').style.display = 'block';
@@ -515,13 +926,14 @@
             d.componente === componente
         );
 
-        // Ordem decrescente nas edições
         dadosFiltrados.sort((a,b) => b.edicao.localeCompare(a.edicao));
 
         renderizarDesempenho();
+        renderizarDistribuicao();
         renderizarEvolucao();
     }
 
+    // RENDERIZAÇÃO DA ABA 1: DESEMPENHO POR EDIÇÃO (GRÁFICOS HORIZONTAIS INDIVIDUAIS)
     function renderizarDesempenho() {
         const container = document.getElementById('desempenho');
         container.innerHTML = '';
@@ -559,13 +971,12 @@
             
             const title = document.createElement('h5');
             title.className = 'm-0 fw-bold';
-            title.textContent = `Edição: ${d.edicao}`;
+            title.innerHTML = `<i class="bi bi-calendar-event text-primary me-2"></i>Edição: ${d.edicao}`;
             headerDiv.appendChild(title);
 
-            // Botão de download nomeado: Escola_INEP_Edição
             const btnDownload = document.createElement('button');
-            btnDownload.className = 'btn btn-outline-secondary btn-sm fw-semibold';
-            btnDownload.innerHTML = '📥 Baixar Gráfico';
+            btnDownload.className = 'btn btn-outline-secondary fw-semibold';
+            btnDownload.innerHTML = '<i class="bi bi-download"></i> Baixar Gráfico';
             btnDownload.onclick = function() {
                 const nomeLimpo = nomeEscola.replace(/[^a-zA-Z0-9]/g, '_');
                 const nomeArquivo = `${nomeLimpo}_${inepAtual}_Edicao_${d.edicao}.png`;
@@ -580,7 +991,7 @@
             cardDiv.appendChild(headerDiv);
 
             const row = document.createElement('div');
-            row.className = 'row align-items-center';
+            row.className = 'row align-items-center g-3';
 
             const colGrafico = document.createElement('div');
             colGrafico.className = 'col-md-9';
@@ -629,14 +1040,13 @@
                     plugins: {
                         legend: {
                             position: 'top',
-                            labels: { boxWidth: 14, font: { size: 12, weight: '600' } }
+                            labels: { boxWidth: 14, font: { size: 11, weight: '600' } }
                         },
-                        // Rótulos maiores conforme solicitado
                         datalabels: {
                             color: function(context) {
                                 return textColors[context.datasetIndex] || '#fff';
                             },
-                            font: { weight: 'bold', size: 15 },
+                            font: { weight: 'bold', size: 14 },
                             formatter: function(value) {
                                 let rounded = Math.round(value);
                                 return rounded >= 3 ? `${rounded}%` : '';
@@ -671,6 +1081,135 @@
         });
     }
 
+    // NOVA RENDERIZAÇÃO: DISTRIBUIÇÃO POR NÍVEIS (TODAS EDIÇÕES) - BARRAS VERTICAIS
+    function renderizarDistribuicao() {
+        if (graficoDistribuicao) {
+            graficoDistribuicao.destroy();
+            graficoDistribuicao = null;
+        }
+
+        const canvas = document.getElementById('graficoDistribuicao');
+        if (!canvas) return;
+
+        if (dadosFiltrados.length === 0) {
+            const ctx = canvas.getContext('2d');
+            ctx.font = '16px Inter';
+            ctx.fillStyle = '#64748b';
+            ctx.textAlign = 'center';
+            ctx.fillText('Nenhum dado disponível para esta seleção', canvas.width / 2, canvas.height / 2);
+            return;
+        }
+
+        // Ordenar edições cronologicamente (crescente)
+        const dadosCron = [...dadosFiltrados].sort((a, b) => a.edicao.localeCompare(b.edicao));
+        const edicoes = dadosCron.map(d => d.edicao);
+        
+        // Cores originais preservadas
+        const cores = {
+            'ABAIXO DO BÁSICO': '#FF4136',
+            'BÁSICO': '#FF851B',
+            'PROFICIENTE': '#B0E57C',
+            'AVANÇADO': '#006400'
+        };
+        
+        const textColors = {
+            'ABAIXO DO BÁSICO': 'white',
+            'BÁSICO': 'black',
+            'PROFICIENTE': 'black',
+            'AVANÇADO': 'white'
+        };
+
+        // Obter categorias do primeiro registro (padrão é o mesmo para todos)
+        const primeiroAgr = agruparNiveis(dadosCron[0].etapaNum, dadosCron[0].componente, dadosCron[0].niveis);
+        const categorias = primeiroAgr.categorias;
+        
+        // Construir datasets (um por categoria de nível)
+        const datasets = categorias.map((cat) => {
+            const dadosCategoria = dadosCron.map(d => {
+                const agr = agruparNiveis(d.etapaNum, d.componente, d.niveis);
+                const idx = agr.categorias.indexOf(cat);
+                return idx >= 0 ? Math.round(agr.valoresCategorias[idx]) : 0;
+            });
+            
+            return {
+                label: cat,
+                data: dadosCategoria,
+                backgroundColor: cores[cat],
+                borderColor: '#ffffff',
+                borderWidth: 2,
+                borderRadius: 4,
+                borderSkipped: false
+            };
+        });
+
+        const ctx = canvas.getContext('2d');
+        graficoDistribuicao = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: edicoes,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            boxWidth: 16,
+                            boxHeight: 16,
+                            font: { size: 12, weight: '600' },
+                            padding: 15
+                        }
+                    },
+                    datalabels: {
+                        color: function(context) {
+                            const cat = context.dataset.label;
+                            return textColors[cat] || 'black';
+                        },
+                        font: { weight: 'bold', size: 13 },
+                        anchor: 'center',
+                        align: 'center',
+                        formatter: function(value) {
+                            return value >= 4 ? `${value}%` : '';
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.dataset.label}: ${context.raw}%`;
+                            }
+                        }
+                    },
+                    title: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 13, weight: '600' }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        min: 0,
+                        max: 100,
+                        ticks: {
+                            callback: v => v + '%',
+                            stepSize: 20,
+                            font: { size: 12 }
+                        },
+                        grid: { color: '#f1f5f9' }
+                    }
+                }
+            }
+        });
+    }
+
+    // RENDERIZAÇÃO DA ABA 3: EVOLUÇÃO HISTÓRICA (AGORA COM COMPARATIVO MARACANAÚ)
     function renderizarEvolucao() {
         if (graficoEvolucao) {
             graficoEvolucao.destroy();
@@ -682,48 +1221,110 @@
 
         if (dadosFiltrados.length === 0) return;
 
-        const dadosCron = [...dadosFiltrados].reverse();
+        const inepAtual = document.getElementById('escolaSelect').value;
+        const etapaAtual = parseInt(document.getElementById('etapaSelect').value, 10);
+        const componenteAtual = document.getElementById('componenteSelect').value;
+        const nomeEscola = escolasMap.get(inepAtual) || 'Escola';
+        
+        // Verificar se o usuário selecionou o próprio Maracanaú
+        const isMaracanauSelecionado = nomeEscola.toUpperCase().includes('MARACANAÚ') || 
+                                       nomeEscola.toUpperCase().includes('MARACANAU');
+
+        // Dados da entidade selecionada (em ordem cronológica)
+        const dadosCron = [...dadosFiltrados].sort((a, b) => a.edicao.localeCompare(b.edicao));
         const edicoes = dadosCron.map(d => d.edicao);
-        const adequados = dadosCron.map(d => {
+        const adequadosEscola = dadosCron.map(d => {
             const { valoresCategorias } = agruparNiveis(d.etapaNum, d.componente, d.niveis);
             return Math.round((valoresCategorias[2] || 0) + (valoresCategorias[3] || 0));
         });
+
+        // Buscar dados de Maracanaú para a mesma etapa e componente
+        const dadosMaracanau = dados.filter(d => 
+            (d.nome.toUpperCase().includes('MARACANAÚ') || d.nome.toUpperCase().includes('MARACANAU')) &&
+            d.etapaNum === etapaAtual &&
+            d.componente === componenteAtual
+        ).sort((a, b) => a.edicao.localeCompare(b.edicao));
+
+        // Mapear os valores de Maracanaú para cada edição
+        const adequadosMaracanau = edicoes.map(ed => {
+            const encontrado = dadosMaracanau.find(d => d.edicao === ed);
+            if (!encontrado) return null;
+            const { valoresCategorias } = agruparNiveis(encontrado.etapaNum, encontrado.componente, encontrado.niveis);
+            return Math.round((valoresCategorias[2] || 0) + (valoresCategorias[3] || 0));
+        });
+
+        const datasets = [{
+            label: nomeEscola,
+            data: adequadosEscola,
+            borderColor: '#196F3D',
+            backgroundColor: 'rgba(25, 111, 61, 0.1)',
+            tension: 0.25,
+            pointBackgroundColor: '#196F3D',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2,
+            fill: true,
+            pointRadius: 6,
+            pointHoverRadius: 8,
+            borderWidth: 3
+        }];
+
+        // Adicionar linha de Maracanaú apenas se não for a entidade selecionada
+        if (!isMaracanauSelecionado && dadosMaracanau.length > 0) {
+            datasets.push({
+                label: 'Maracanaú (Município)',
+                data: adequadosMaracanau,
+                borderColor: '#8b5cf6',
+                backgroundColor: 'rgba(139, 92, 246, 0.05)',
+                tension: 0.25,
+                pointBackgroundColor: '#8b5cf6',
+                pointBorderColor: '#ffffff',
+                pointBorderWidth: 2,
+                borderDash: [8, 5], // Linha tracejada
+                fill: false,
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                borderWidth: 2.5
+            });
+        }
 
         const ctx = canvas.getContext('2d');
         graficoEvolucao = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: edicoes,
-                datasets: [{
-                    label: 'Aprendizagem Adequada (%)',
-                    data: adequados,
-                    borderColor: '#196F3D',
-                    backgroundColor: 'rgba(25, 111, 61, 0.1)',
-                    tension: 0.25,
-                    pointBackgroundColor: '#196F3D',
-                    fill: true,
-                    pointRadius: 6,
-                    pointHoverRadius: 8,
-                    borderWidth: 3
-                }]
+                datasets: datasets
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'top', labels: { font: { size: 12, weight: '600' } } },
+                    legend: { 
+                        position: 'top', 
+                        labels: { 
+                            font: { size: 12, weight: '600' },
+                            padding: 15,
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        } 
+                    },
                     datalabels: {
                         align: 'top',
                         anchor: 'end',
-                        color: '#196F3D',
-                        font: { weight: 'bold', size: 13 },
+                        color: function(context) {
+                            return context.dataset.borderColor;
+                        },
+                        font: { weight: 'bold', size: 12 },
+                        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                        borderRadius: 4,
+                        padding: 4,
                         formatter: function(value) {
-                            return `${value}%`;
-                        }
+                            return value !== null ? `${value}%` : '';
+                        },
+                        offset: 8
                     },
                     tooltip: {
                         callbacks: {
-                            label: context => ` Aprendizagem Adequada: ${context.raw}%`
+                            label: context => ` ${context.dataset.label}: ${context.raw}%`
                         }
                     }
                 },
@@ -731,17 +1332,40 @@
                     y: {
                         min: 0,
                         max: 100,
-                        ticks: { callback: v => v + '%' },
+                        ticks: { 
+                            callback: v => v + '%',
+                            font: { size: 12 }
+                        },
                         grid: { color: '#f1f5f9' }
                     },
                     x: {
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 13, weight: '600' }
+                        }
                     }
                 }
             }
         });
     }
 
+    // Download da Distribuição por Níveis
+    document.getElementById('btnBaixarDistribuicao').addEventListener('click', function() {
+        if (!graficoDistribuicao) return;
+        const inepAtual = document.getElementById('escolaSelect').value;
+        const nomeEscola = escolasMap.get(inepAtual) || 'escola';
+        const nomeLimpo = nomeEscola.replace(/[^a-zA-Z0-9]/g, '_');
+        const nomeArquivo = `${nomeLimpo}_${inepAtual}_Distribuicao_Niveis.png`;
+        
+        const canvasEl = document.getElementById('graficoDistribuicao');
+        const image = canvasEl.toDataURL('image/png');
+        const a = document.createElement('a');
+        a.href = image;
+        a.download = nomeArquivo;
+        a.click();
+    });
+
+    // Download da Evolução
     document.getElementById('btnBaixarEvolucao').addEventListener('click', function() {
         if (!graficoEvolucao) return;
         const inepAtual = document.getElementById('escolaSelect').value;
@@ -787,14 +1411,13 @@
         atualizarTudo();
     });
 
-    // Geração de PDF com cabeçalho institucional contendo Escola, Município/Nome, INEP e filtros ativos
+    // Geração de PDF
     document.getElementById('btnPDF').addEventListener('click', function() {
         const inepAtual = document.getElementById('escolaSelect').value;
         const nomeEscola = escolasMap.get(inepAtual) || 'Escola';
         const etapaVal = document.getElementById('etapaSelect').value;
         const compVal = document.getElementById('componenteSelect').value;
 
-        // Ativa o cabeçalho específico para impressão
         const headerBox = document.getElementById('pdfHeaderBox');
         document.getElementById('pdfEscolaNome').textContent = `Instituição / Município: ${nomeEscola}`;
         document.getElementById('pdfDetalhesInfo').textContent = `Código INEP: ${inepAtual} | Etapa: ${etapaVal}º Ano | Componente: ${compVal}`;
@@ -802,7 +1425,7 @@
 
         const content = document.getElementById('mainContent');
         html2canvas(content, { scale: 2, useCORS: true }).then(canvas => {
-            headerBox.style.display = 'none'; // oculta novamente após o print
+            headerBox.style.display = 'none';
             const imgData = canvas.toDataURL('image/png');
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF('p', 'pt', 'a4');
